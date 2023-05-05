@@ -89,6 +89,11 @@ void deleteNode(Node* &head,int position){
 }
 
 void print(Node* &head){
+
+    if(head==NULL){
+        cout<<"empty";
+        return;
+    }
     Node* temp=head;
     while(temp != NULL){
         cout<<temp->data<<" ";
@@ -97,8 +102,29 @@ void print(Node* &head){
     cout<<endl;
 }
 
+bool isCircularList(Node* head){
+    if(head==NULL){
+        return 1;
+    }
+    
+    Node* temp=head -> next;
+    while(temp!=NULL && temp!=head){
+        temp=temp->next;
+    }
+
+    if(temp==head){
+        return 1;
+    }
+    
+    return 0;
+}
+
 int main(){
 
+    /*
+    Node* node1= NULL;
+    Node* head=node1;
+    */
     Node* node1= new Node(10);
     // cout << node1->data << endl;
     // cout << node1->next << endl;
@@ -121,6 +147,13 @@ int main(){
 
     deleteNode(head,3);
     print(head);
+
+    if(isCircularList(head)){
+        cout<<"Yes";
+    }
+    else{
+        cout<<"No";
+    }
     
     return 0;
 
