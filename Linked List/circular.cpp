@@ -52,7 +52,7 @@ void deleteNode(Node* &tail, int value){
         cout<<"Please check the list again"<<endl;
         return;
     }
-    
+
     else{
         //non-empty
         //assuming "value" is present in the list
@@ -99,28 +99,52 @@ void print(Node* tail){
     cout<<endl;
 }
 
+bool isCircularList(Node* head){
+    if(head==NULL)
+        return 1;
+    
+    Node* temp=head->next;
+    while(temp!=NULL && temp!=head){
+        temp=temp->next;
+    }
+
+    if(temp==head)
+        return 1;
+    
+    return false;
+}
+
 int main(){
 
     Node* tail = NULL;
     insertNode(tail,5,3);
     print(tail);
 
-    // insertNode(tail,3,5);
-    // print(tail);
-    // insertNode(tail,5,7);
-    // print(tail);
-    // insertNode(tail,7,9);
-    // print(tail);
-    // insertNode(tail,5,6);
-    // print(tail);
-    // insertNode(tail,9,10);
-    // print(tail);
-    // insertNode(tail,3,4);
-    // print(tail);
-    // deleteNode(tail,3);
-    // print(tail);
+    insertNode(tail,3,5);
+    print(tail);
+    insertNode(tail,5,7);
+    print(tail);
+    insertNode(tail,7,9);
+    print(tail);
+/*
+    insertNode(tail,5,6);
+    print(tail);
+    insertNode(tail,9,10);
+    print(tail);
+    insertNode(tail,3,4);
+    print(tail);
     deleteNode(tail,3);
     print(tail);
+    deleteNode(tail,3);
+    print(tail);
+*/
+    if(isCircularList(tail)){
+        cout<<"Yes";
+    }
+    else{
+        cout<<"No";
+    }
+
 
     return 0;
 }
