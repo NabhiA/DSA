@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 using namespace std;
 
 class Node{
@@ -119,6 +120,75 @@ bool isCircularList(Node* head){
     return 0;
 }
 
+bool detectLoop(Node* head){
+    if(head==NULL){
+        return false;
+    }
+
+    map<Node*,bool> visited;
+
+    Node* temp=head;
+    while(temp!=NULL){
+        if(visited[temp] == true){
+            cout<<"Cycle present at: "<<temp->data<<endl;
+            return 1;
+        }
+        visited[temp]=true;
+        temp=temp->next;
+    }
+}
+
+Node* floydDetect(Node* head){
+    if(head==NULL){
+        return NULL;
+    }
+
+    Node* slow=head;
+    Node* fast=head;
+
+    while(slow!=NULL && fast!=NULL){
+        fast=fast->next;
+        if(fast!=NULL){
+            fast=fast->next;
+        }
+        slow=slow->next;
+        if(slow==fast){
+            cout<<"Present at: "<<slow->data<<endl;
+            return slow;
+        }
+    }
+    return NULL;
+}
+
+Node* getStartingNode(Node* head){
+    if(head==NULL)
+        return NULL;
+    
+    Node* intersection=floydDetect(head);
+    if(intersection==NULL){
+        return NULL;
+    }
+    Node* slow=head;
+
+    while(slow!=intersection){
+        slow=slow->next;
+        intersection=intersection->next;
+    }
+
+    return slow;
+}
+
+void removeLoop(Node* head){
+    if(head==NULL)
+        return;
+    Node* startofLoop=getStartingNode(head);
+    Node*temp = startofLoop;
+    while(temp->next != startofLoop){
+        temp=temp->next;
+    }
+    temp->next=NULL;
+}
+
 int main(){
 
     /*
@@ -131,13 +201,13 @@ int main(){
     Node* head= node1;
     Node* tail= node1;
 
-    print(head);
+    //print(head);
 
     insertAtTail(tail, 12);
-    print(head);
+    //print(head);
     //cout<<"12: "<<tail->data<<endl;
     insertAtTail(tail, 15);
-    print(head);
+    //print(head);
     //cout<<"15: "<<tail->data<<endl;
 
     // cout<<"15: "<<tail->data<<endl;
@@ -145,6 +215,7 @@ int main(){
     print(head);
     //cout<<"22: "<<tail->data<<endl;
 
+    /*
     deleteNode(head,3);
     print(head);
 
@@ -154,6 +225,22 @@ int main(){
     else{
         cout<<"No";
     }
+    */
+
+    tail->next=head->next;
+    //print(head);
+
+    if(floydDetect(head) != NULL){
+        cout<<"Cycle is present"<<endl;
+    }
+    else{
+        cout<<"Cycle not present"<<endl;
+    }
+    Node* loop=getStartingNode(head);
+    cout<<"Starting at: "<<loop->data<<endl;
+
+    removeLoop(head);
+    print(head);
     
     return 0;
 
